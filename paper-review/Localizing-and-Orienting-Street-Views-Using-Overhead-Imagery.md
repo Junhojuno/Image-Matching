@@ -77,8 +77,11 @@
     - 이렇게 나온 p(A,B)로 logloss를 구한다.
   - triplet network의 경우(4번째 network)
     <p align="center">
-      <img src='https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/img/DBL_output_triplet.PNG?raw=true' height=70 width=250>
+      <img src='https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/img/DBL_output_triplet.PNG?raw=true' height=80 width=250>
     </p>
+  - **Test시 DBL layer는 제외한다.**
 
+### Learning to perform rotation invariant matching
+- 
 
 
