@@ -9,7 +9,7 @@
 | Distance Based Logistic |
 
 
-### Abstact
+### 0. Abstact
 - 지상에서 찍은 사진의 위치와 방향(?)을 위성사진과 매칭시켜 결정해보는 것을 목표로 함(image matching task)
 - 이와 관련하여 deep CNN architectures를 볼건데, 각각의 장단점이 있다.(Classification, Hybrid vs Siamese, Triplet)
 - image matching task에 몇가지 어려움이 있다.(거리뷰와 위성사진의 극단적 시점차이, **거리뷰의 방위각을 모른다는점**)
@@ -19,7 +19,7 @@
 - 명확하게 방위각같은 orientation을 지정해주면 accuracy가 향상된다.(당연한 얘기)
 - siamese network baseline보다 약 2.5배 향상된 아키텍쳐를 개발하였다고 함.
 
-### Introduction
+### 1. Introduction
 - 시점변수(예를 들면 동일한 물체를 바라보는 방향)와 조명이나 계절 등의 다양한 변수가 존재한다.(이게 까다로움)
 - siameses network를 이용하여 거리뷰와 위성뷰 각각을 CNN에 통과시켜 저차원의 feature로 만든다.
 - 그리고 나서 matching score를 비교하는데
@@ -34,10 +34,10 @@
   2) Deep Learning
   - 패스..!
   
-### Dataset of street view and overhead image pairs
+### 2. Dataset of street view and overhead image pairs
 - 음...데이터셋 추출과정 및 몇가지 사항이 적혀있는데..나중에 필요하면 한번더 읽어보는걸로!
 
-### Cross-view matching and ranking with CNN
+### 3. Cross-view matching and ranking with CNN
 - 학습단계에선, 거리뷰와 위성뷰 pair가 positive examples로 제공되고, negative samples는 non-matched images로!
 - 테스트 단계에선 이미지 pair를 받아서 이것이 match인지 아닌지 classification
 - figure 3을 보면 좌/우로 카테고리가 나뉘어져있는데, 좌측을 upper bound(비교용)로 사용했다고 한다.
@@ -81,7 +81,24 @@
     </p>
   - **Test시 DBL layer는 제외한다.**
 
-### Learning to perform rotation invariant matching
-- 
+### 4. Learning to perform rotation invariant matching
+- 위성뷰 이미지에 rotation을 하는 방식에 관한 내용이다.
+- rotation invariant라는게 간단히 말해 기존 이미지를 회전시킬거라는 의미인데,
+- label은 고정하다보니 invaiant라는 말을 넣은 거 같다. (수학적으로 f(Rx)=f(x)=label)
+- 다만, rotation을 하되 일정 구간에서 random rotation하는 방식이다.(Partial Rotation Invariant)
+  - 예를 들면, 90으로 설정하면 -45~45도 사이의 값을 랜덤하게 뽑아 rotation시킨다는 거 같다.
+  
+  ##### 4.1 Partial rotation invariance by data augmentation
+  - 90도로 정하면, -45~45도 사이의 각도로 회전을 시켜 augmentation시킨다.
+  - train에서와는 다르게 test에서 16 rotation을 썻다고 한다.
+  - 16개의 rotation samples들을 평균을 취해서 하나의 vector로 만들어준다.
+  
+  ##### 4.2 Learning better representations with orientation regression
+  - 마지막 hidden layer로부터 나온 features(거리뷰/위성뷰)들을 concat시켜준다.
+  - 이후 2개의 fc layer(1 hidden, 1 output layer)를 통과시킨다.
+  - 그런다음 이 값과 orientation의 RMSE를 구한다.(orientation이 좌표인가..? 뭘 의미하는거지?)
+  
+### 5. Experiments
+  
 
 
