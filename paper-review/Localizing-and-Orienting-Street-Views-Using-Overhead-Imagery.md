@@ -50,10 +50,22 @@
   
   ##### 3.2 Siamese-like CNN for learning image features
   - image matching과 retrieval(유사도를 뱉어내는 검색)에 사용된다고 하는데...
-  - 두개의 CNN이 각각 거리뷰와 위성뷰를 받아 feature vector를 각각 뱉어낸다.
+  - 두개의 CNN이 각각 거리뷰와 위성뷰를 받아 feature vector를 각각 뱉어낸다.(f(A), f(B))
+  - f(A)와 f(B)의 거리의 제곱을 D라 하고, loss function은 다음과 같다.
+    - `L(A,B, l) = l * D + (1 − l) * max(0,m − D)`
+  - 이 loss function은 label(l)이 1인 경우 두 벡터가 유사하도록, 0이면 멀어지도록 만든다고 한다.
+  - l=0의 경우, m-D를 최소화 하기위해선 D를 maximize시켜야 하고 결국 이 경우 멀어지게 된다.
+  - 기존 siamese network에선 두 network가 weights를 공유하는데 여기선 공유하지 않는다.
+  
+  ##### 3.3 Siamese-classification hybrid network
+  - 핵심은 AlexNet 두개가 각각 거리뷰와 위성뷰를 convolution시킨 후 FC layer에서 합친다.
+  
+  ##### 3.4 Triplet network for learning image features
+  - L(A,B,C) = max(0,m + D(A,B) − D(A,C)) ; 이걸 hinge loss라고 하는 것 같다.
+    - [what is hinge loss?](https://ratsgo.github.io/machine%20learning/2017/10/12/terms/)
+  
+  ##### 3.5 Learning image representation with distance-based logistic loss
   - 
-
-
 
 
 
