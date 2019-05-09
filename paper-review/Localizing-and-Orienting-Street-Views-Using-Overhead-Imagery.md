@@ -50,6 +50,9 @@
   
   ##### 3.2 Siamese-like CNN for learning image features
   - image matching과 retrieval(유사도를 뱉어내는 검색)에 사용된다고 하는데...
+  <p align="center">
+  <img src='https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/img/DBL_figure.PNG?raw=true' height=350 width=550>
+  </p>
   - 두개의 CNN이 각각 거리뷰와 위성뷰를 받아 feature vector를 각각 뱉어낸다.(f(A), f(B))
   - f(A)와 f(B)의 거리의 제곱을 D라 하고, loss function은 다음과 같다.
     - `L(A,B, l) = l * D + (1 − l) * max(0,m − D)`
@@ -65,10 +68,17 @@
     - [what is hinge loss?](https://ratsgo.github.io/machine%20learning/2017/10/12/terms/)
   
   ##### 3.5 Learning image representation with distance-based logistic loss
-  - 
-
-
-
+  - siamese network의 경우(3번째 network) 
+    - contrastive loss대신에 마지막 layer를 DBL layer로 두고 다음의 output을 추출한다.
+    <p align="center">
+      <img src='https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/img/DBL_output.PNG?raw=true' height=70 width=250>
+    </p>
+    - 위 값 p(A,B)가 0~1사이의 값을 뱉어내 마치 distance로부터 매칭확률처럼 보인다.
+    - 이렇게 나온 p(A,B)로 logloss를 구한다.
+  - triplet network의 경우(4번째 network)
+    <p align="center">
+      <img src='https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/img/DBL_output_triplet.PNG?raw=true' height=70 width=250>
+    </p>
 
 
 
