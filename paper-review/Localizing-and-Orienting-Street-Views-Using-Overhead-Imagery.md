@@ -1,13 +1,12 @@
 # Localizing and Orienting Street Views Using Overhead Imagery (2017)
 : 인공위성의 사진을 통해 거리뷰 사진을 보고 위치를 추정한다.
 
-| Keywords |
-|:----------:|
-| image geolocalization |
-| image matching (cross domain matching) |
-| 4 Deep CNN architectures |
-| Distance Based Logistic |
-
+| Keywords | 읽는 초점 |
+|:----------:|:---------:|
+| image matching (cross domain matching) | Matching을 시키는 방식은 어떠한가? |
+| 4 Deep CNN architectures | 사실상 siamese와 triplet의 구조와 차이는 어떠한가? |
+| Distance Based Logistic | DBL을 활용하여 loss를 어떻게 설정하였는가? |
+| rotation invariant | 전처리 과정에서 어떻게 rotation이 이루어졌는가? |
 
 ### 0. Abstact
 - 지상에서 찍은 사진의 위치와 방향(?)을 위성사진과 매칭시켜 결정해보는 것을 목표로 함(image matching task)
