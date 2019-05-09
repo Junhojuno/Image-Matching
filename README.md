@@ -1,5 +1,5 @@
 # Image-Matching
-image matching task from different viewpoints
+image matching에 관한 논문을 읽고 이를 구현해보자 :joy:
 
 ### Papers
 [Localizing and Orienting Street Views Using Overhead Imagery](https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/Localizing-and-Orienting-Street-Views-Using-Overhead-Imagery.md) 
