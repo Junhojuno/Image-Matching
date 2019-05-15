@@ -21,12 +21,14 @@
 | rotation invariance | 전처리 과정에서 어떻게 rotation이 이루어지며, relative rotation을 어떻게 구하는가? |
 
 ### 1. Introduction
-- 시점변수(예를 들면 동일한 물체를 바라보는 방향)와 조명이나 계절 등의 다양한 변수가 존재한다.(이게 까다로움)
-- siameses network를 이용하여 거리뷰와 위성뷰 각각을 CNN에 통과시켜 저차원의 feature로 만든다.
-- 그리고 나서 matching score를 비교하는데
-- pre-trained network를 사용하면 결과가 향상되나보다...당연한건가
-- 그리고 새로운 loss function인 Distance Based Logistic(DBL)을 사용한다.
-- 여기에 rotational variance(RI)와 orientation regression(OR)을 통합하여 학습한다.(성능 향상에 기여)
+- 앞서 말했던 시점의 차이와 더불어 조명/계절변화 등의 요인이 challenging points.
+- figure 1에서와 같이, 한번 매칭이 끝나면 ranking이 정해지고, 위치 추정을 한다.
+- siamese network는 저차원 feature map(거리뷰/위성뷰)을 학습하는데 쓰였고,
+- 두 이미지의 feature map을 비교해 matching score를 결정한다.
+- **여기서 갈래가 두가지로 나뉜다.**
+  - matching task와 ranking task로 다른 딥러닝 접근방식이 들어간다.
+  - 각각 DBL loss와 <rotation invariance + orientation regression> 사용
+  
 
   ##### 1.1 Ralated work
   1) Image geolocalization
@@ -36,9 +38,29 @@
   - 패스..!
   
 ### 2. Dataset of street view and overhead image pairs
+- Google panorama image에 위치정보(geo-tag, depth)가 포함되어 있는 것 같다.
+
 - 음...데이터셋 추출과정 및 몇가지 사항이 적혀있는데..나중에 필요하면 한번더 읽어보는걸로!
 
 ### 3. Cross-view matching and ranking with CNN
+- 앞에서 task가 2개로 나뉜다고 했다.(matching과 ranking)
+- matching task를 먼저 설명하면
+  - 학습시에 matched 데이터가 (street, overhead) pair로 들어서 학습시킵니다.(positive examples)
+  - 테스트시에 위에서 학습시킨 모델로 match or not 분류한다.
+- figure 3를 보면, CNN이 2개의 카테고리로 구분되는데,
+  - 첫번째 카테고리(figure3의 좌측1열)는 matching을 담당하는 구조들이다.
+  - convolution layer까지만 통과하고 나온 representation들은 feature embedding에 사용된다.
+  - 두번째 카테고리(figure3의 우측1열)는...(따로 말은 없지만 ranking이지 않을까?)
+  - 두번째 카테고리에서 새로운 loss function인 DBL을 사용한다.
+- 정리하면, 두 카테고리의 조합으로 matching과 ranking task를 해결한다는 것이다.
+  - 조합을 한다면 아래와 같이 각각 학습시킨다는 것인가...?
+  - 첫번째 카테고리에서 위에꺼, 두번째 카테고리에서 위에꺼를 예로 들면,
+  - (street, overhead) --> AlexNet --> match or not
+  - (street, overhead) --> Siamese Network(AlexNet 2개) --> ranking
+- 이 논문에서는 Siamese-Hybrid Network를 제안한다
+  - (street, overhead) --> Siamese Network --> concatenation --> fc --> fc --> 
+  
+
 - 학습단계에선, 거리뷰와 위성뷰 pair가 positive examples로 제공되고, negative samples는 non-matched images로!
 - 테스트 단계에선 이미지 pair를 받아서 이것이 match인지 아닌지 classification
 - figure 3을 보면 좌/우로 카테고리가 나뉘어져있는데, 좌측을 upper bound(비교용)로 사용했다고 한다.
