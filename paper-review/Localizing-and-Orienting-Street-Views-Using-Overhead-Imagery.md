@@ -28,6 +28,7 @@
 - **여기서 갈래가 두가지로 나뉜다.**
   - matching task와 ranking task로 다른 딥러닝 접근방식이 들어간다.
   - 각각 DBL loss와 <rotation invariance + orientation regression> 사용
+  - ranking task랑 orientation regression하고 연관성이 직관적으로 와닿지 않는데..?
   
 
   ##### 1.1 Ralated work
@@ -48,23 +49,20 @@
   - 학습시에 matched 데이터가 (street, overhead) pair로 들어서 학습시킵니다.(positive examples)
   - 테스트시에 위에서 학습시킨 모델로 match or not 분류한다.
 - figure 3를 보면, CNN이 2개의 카테고리로 구분되는데,
-  - 첫번째 카테고리(figure3의 좌측1열)는 matching을 담당하는 구조들이다.
+  - 첫번째 카테고리(figure3의 좌측1열)는 matching에서 classification을 담당하는 구조들(match or not).
   - convolution layer까지만 통과하고 나온 representation들은 feature embedding에 사용된다.
-  - 두번째 카테고리(figure3의 우측1열)는...(따로 말은 없지만 ranking이지 않을까?)
+  - 두번째 카테고리(figure3의 우측1열)는 각 network의 representation의 embedding을 담당하는 구조들.
   - 두번째 카테고리에서 새로운 loss function인 DBL을 사용한다.
 - 정리하면, 두 카테고리의 조합으로 matching과 ranking task를 해결한다는 것이다.
   - 조합을 한다면 아래와 같이 각각 학습시킨다는 것인가...?
   - 첫번째 카테고리에서 위에꺼, 두번째 카테고리에서 위에꺼를 예로 들면,
   - (street, overhead) --> AlexNet --> match or not
-  - (street, overhead) --> Siamese Network(AlexNet 2개) --> ranking
+  - (street, overhead) --> Siamese Network(AlexNet 2개) --> embedding by DBL loss
 - 이 논문에서는 Siamese-Hybrid Network를 제안한다
-  - (street, overhead) --> Siamese Network --> concatenation --> fc --> fc --> 
+  - (street, overhead) --> Siamese Network --> DBL loss, concatenation --> fc --> fc --> orientation regression 
   
-
-- 학습단계에선, 거리뷰와 위성뷰 pair가 positive examples로 제공되고, negative samples는 non-matched images로!
-- 테스트 단계에선 이미지 pair를 받아서 이것이 match인지 아닌지 classification
-- figure 3을 보면 좌/우로 카테고리가 나뉘어져있는데, 좌측을 upper bound(비교용)로 사용했다고 한다.
-
+ ---
+ 
   ##### 3.1 Classification CNN for image matching
   - AlexNet을 변형하여 사용하였다.
   - 먼저 input image를 합쳤다.(AlexNet의 input은 1개이기 때문이다.)
