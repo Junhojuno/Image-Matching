@@ -1,23 +1,24 @@
 # Localizing and Orienting Street Views Using Overhead Imagery (2017)
 : 인공위성의 사진을 통해 거리뷰 사진을 보고 위치를 추정한다.
 
+### 0. Abstact
+- 거리뷰 이미지(ground level)를 위에서 찍은 이미지(overhead)와 matching시켜 해당 사진의 위치와 방향을 정하는 게 핵심.
+- 이를 위해 100만쌍의 이미지를 모았고, 4개의 Deep CNN 구조를 사용하였다.
+- 그리고 새로운 loss function을 사용하였는데, 이를 통해 정확도를 향상시켰다.
+- image matching이 어려운 이유는 극단적 시각차(거리뷰와 위성사진의 시각차)뿐만 아니라
+- 거리뷰의 방위각(?)을 몰라서 두 이미지 pair를 대응시키기 힘들기 때문.
+  - 방위각의 개념은 위키피디아에서 찾아보고,
+  - 멀리서 해당 거리를 바라본건지, 바로 앞에서 본건지 거리뷰만 보고는 알 수 없다는 의미인거 같다.
+- 해결책까지는 아니지만 rotation invariance를 학습에 사용하였다.
+  - 위성뷰를 받아서 몇 도 회전시킬지 sampling을 하고
+  - 그 다음 거리뷰와 위성뷰의 상대적 회전정도(?)를 neural network로 예측한다.(이게 핵심이겠네)
+
 | Keywords | 읽는 초점 |
 |:----------:|:---------:|
-| image matching (cross domain matching) | Matching은 어떻게 시키는가? |
-| 4 Deep CNN architectures | 기존 siamese/triplet과의 차이는 어떠한가? |
-| Distance Based Logistic | DBL을 활용하여 loss를 어떻게 설정하였는가? |
-| 2 Loss function | loss function 2개는 어떻게 이어지는가? |
-| rotation invariant | 전처리 과정에서 어떻게 rotation이 이루어졌는가? |
-
-### 0. Abstact
-- 지상에서 찍은 사진의 위치와 방향(?)을 위성사진과 매칭시켜 결정해보는 것을 목표로 함(image matching task)
-- 이와 관련하여 deep CNN architectures를 볼건데, 각각의 장단점이 있다.(Classification, Hybrid vs Siamese, Triplet)
-- image matching task에 몇가지 어려움이 있다.(거리뷰와 위성사진의 극단적 시점차이, **거리뷰의 방위각을 모른다는점**)
-- 중간에 rotation invariance라는 말이 나오는데,
-  - **rotational invariance** if its value does not change when arbitrary rotations are applied to it
-  - 여기서 말하는 value가 target(label)을 의미하는건가?
-- 명확하게 방위각같은 orientation을 지정해주면 accuracy가 향상된다.(당연한 얘기)
-- siamese network baseline보다 약 2.5배 향상된 아키텍쳐를 개발하였다고 함.
+| image matching (cross domain matching) | 어떻게 Matching이 이루어지는가? |
+| 4 Deep CNN architectures | 각각의 구조는 어떠한가? |
+| 새로운 loss function (Distance Based Logistic) | DBL을 활용하여 loss를 어떻게 설정하였는가? |
+| rotation invariance | 전처리 과정에서 어떻게 rotation이 이루어지며, relative rotation을 어떻게 구하는가? |
 
 ### 1. Introduction
 - 시점변수(예를 들면 동일한 물체를 바라보는 방향)와 조명이나 계절 등의 다양한 변수가 존재한다.(이게 까다로움)
