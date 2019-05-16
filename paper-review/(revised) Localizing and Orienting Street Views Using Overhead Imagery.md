@@ -106,3 +106,22 @@
 
 ### 4. Learning to perform rotation invariant matching
 - street/overhead matching시에 orientation alignment가 중요하다.
+  
+  ##### 4.1 Partial rotation invariance by data augmentation
+  `rotation invariance : 이미지를 회전시켜도 그 이미지를 분류해낼수 있는 것을 말함`
+  - orientation alignment를 orientation regression으로 학습한다는 것 같다.
+  - **Training with multiple rotation samples**
+    - overhead를 여러 각도로 회전시켜 학습
+    - partial RI는 일부 각도에서만 분류능력을 갖춤.
+    - RI를 90도로 정하면 -45~45도 사이의 각도로 overhead를 여러번 회전시킨다.
+    - 이러면 90도에 대해서만 Rotation Invariance한 상태가 되는 것이다.
+    - 360도로 정하면 fully RI가 된다.
+  - **Testing with multiple rotation samples/crops**
+    - test에서는 정확한 orientation alignment를 모르기 때문에,
+    - training에서 patial RI였다면, partial RI한 범위에서 sample하나뽑고 그외에서 여러개 뽑아야한다.
+    - 예를들어 360도로 학습시켰다면, test에서 sample은 1개면 충분하다.
+    - 180도라면? 180도에서 1개, -180도에서 1개
+    - 90도라면? 16개...???(16개까지 더 뽑았더니 성능이 약간 올랐다고함..)
+  - **Multi-orientation feature averaging**
+    - 16개의 samples들을 뽑았다면, 평균을 때려 하나의 sample처럼 만들자.
+    
