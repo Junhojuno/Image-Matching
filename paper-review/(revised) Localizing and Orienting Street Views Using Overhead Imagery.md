@@ -101,3 +101,8 @@
   <p align="center">
   <img src='https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/img/DBL5.PNG?raw=true' height=350 width=650>
   </p>
+  
+  - **Implementation detail** : m=10, D=euclidean distance 사용, feature normalization사용하지 않음. 
+
+### 4. Learning to perform rotation invariant matching
+- street/overhead matching시에 orientation alignment가 중요하다.
