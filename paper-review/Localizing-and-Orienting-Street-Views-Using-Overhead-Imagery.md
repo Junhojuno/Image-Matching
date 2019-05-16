@@ -60,17 +60,29 @@
   - (street, overhead) --> Siamese Network(AlexNet 2개) --> embedding by DBL loss
 - 이 논문에서는 Siamese-Hybrid Network를 제안한다
   - (street, overhead) --> Siamese Network --> DBL loss, concatenation --> fc --> fc --> orientation regression 
+- 그래서 총 6개의 network가 이 실험에 사용된다.
   
- ---
- 
   ##### 3.1 Classification CNN for image matching
+  - figure 3의 좌측 상단의 network구조를 사용하여 match or not을 분류한다.
+  - (street, overhead) input image를 합쳤다.(AlexNet의 input은 1개이기 때문이다.)
+  
+  ```
   - AlexNet을 변형하여 사용하였다.
   - 먼저 input image를 합쳤다.(AlexNet의 input은 1개이기 때문이다.)
   - 그래서 input은 6 channels이고(거리뷰+위성뷰 concat), 최종 output은 2개(binary면 1개 아닌가...??)
   - 그리고 loss는 network를 통과해 나온 값과 0또는1의 값을 갖는 label의 차이를 줄이는 binary crossentropy
-  
+  ```
+ 
   ##### 3.2 Siamese-like CNN for learning image features
-  - image matching과 retrieval(유사도를 뱉어내는 검색)에 사용된다고 하는데...
+  - figure 3의 좌측 하단 network구조
+  - 제목과 같이 siamese-like이지 siamese network가 아니라는 점을 명심하자.
+  - street과 overhead 각각은 input size가 다르다.
+  - 그래서 각각의 convolution을 통과하고 동일한 size로 맞춰주고 fully connected는 동일하게 들어간다.
+  - fc layer까지 통과하고 나온게 f(A), f(B)이고 이 둘의 distance를 구해서 충분히 작으면 match
+  - non-match인데 distance가 가까운 경우, 멀리보내는 정도가 크다.(화살표의 길이가 더 길다)
+  - 이는 loss function과 figure 4를 참고하자.
+  - 참고로 convolution은 pre-trained인거 같다.(learned network라는 걸 보니)
+    
   <p align="center">
   <img src='https://github.com/Junhojuno/Image-Matching/blob/master/paper-review/img/DBL_figure.PNG?raw=true' height=350 width=550>
   </p>
@@ -82,6 +94,9 @@
   - 기존 siamese network에선 두 network가 weights를 공유하는데 여기선 공유하지 않는다.
   
   ##### 3.3 Siamese-classification hybrid network
+  - 이 hybrid network는 이미지가 독립적으로 처리되어 output feature를 뽑는다는 점에서 siamese network와 유사
+  - 그리고 
+  
   - 핵심은 AlexNet 두개가 각각 거리뷰와 위성뷰를 convolution시킨 후 FC layer에서 합친다.
   
   ##### 3.4 Triplet network for learning image features
