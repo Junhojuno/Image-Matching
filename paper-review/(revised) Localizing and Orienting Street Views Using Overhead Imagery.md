@@ -74,7 +74,7 @@
   - convolution에서 나온 두 feature representation을 합쳐서 matching prob을 구하는 점에서 classification과 유사.
   - 정리하면, street/overhead 각각 convolution 통과시키고 concat해서 fc를 통과시켜 match or not 판단
   
-  ##### 3.4 Triplet network for learning image features
+  ##### 3.4 Triplet network for learning image features : figure 3 ()
   - 3.3 network가 2개의 CNN을 사용하는데 반해, Triplet은 3개를 사용한다.
   - 즉, 이미지가 3개(A,B,C)가 들어가는데 (A,B)는 match pair이고 (A,C)는 non-match pair다. 
   - match pair의 거리는 최소화, non-match pair의 거리는 최대화 --> hinge loss(margin maximum)
