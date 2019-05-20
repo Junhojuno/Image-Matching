@@ -125,3 +125,18 @@
   - **Multi-orientation feature averaging**
     - 16개의 samples들을 뽑았다면, 평균을 때려 하나의 sample처럼 만들자.
     
+  ##### 4.2 Learning better representation with orientation regression
+  `orientation regression (Auxiliary loss) : 최적의 rotation을 맞춘다?`
+  - augmentation에서 사용되는 rotation을 regression의 label로 사용하여 euclidean distance계산
+  
+### 5. Experienments
+- 데이터 준비 : 100만쌍의 matched image pair (11개의 도시)
+- Batch size : 128 (64 positive samples + 64 negative samples)
+- learning rate : 처음엔 크게, 점차 decaying
+- training iteration : 15만회
+- 사용 프레임워크 : caffe
+- 데이터 augmentation : overhead image를 rotation해서 학습
+  - 테스트시에는 rotation 여러번, random cropping/scaling사용
+- image ranking & geolocalization
+  - 거리뷰와 위성뷰(얘는 뭉탱이)를 각각 network를 통과후 distance계산해서 ranking 
+  
